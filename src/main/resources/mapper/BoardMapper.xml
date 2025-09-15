@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="com.multi.springboot.mapper.BoardMapper">
+    <!-- BoardMapper.xml -->
+    <resultMap id="BoardMap" type="com.multi.springboot.model.Board">
+        <id     property="id"        column="id"/>
+        <result property="title"     column="title"/>
+        <result property="writer"    column="writer"/>
+        <result property="content"   column="content"/>
+        <result property="views"     column="views"/>
+        <result property="createdAt" column="created_at" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
 
-    <select id="getAllBoards" resultType="com.multi.springboot.model.Board">
-        SELECT * FROM board ORDER BY id DESC
+    <select id="getAllBoards" resultMap="BoardMap">
+        SELECT id, title, writer, content, views, created_at
+        FROM board
+        ORDER BY id DESC
     </select>
 
+
+
     <select id="getBoardById" parameterType="int" resultType="com.multi.springboot.model.Board">
-        SELECT * FROM board WHERE id = #{id}
+        SELECT id, title, writer, content, views, created_at
+        FROM board
+        WHERE id = #{VALUE}
     </select>
 
     <insert id="insertBoard" parameterType="com.multi.springboot.model.Board">
@@ -19,16 +33,73 @@
 
     <update id="updateBoard" parameterType="com.multi.springboot.model.Board">
         UPDATE board
-        SET title = #{title}, content = #{content}
+        SET title = #{title},
+            content = #{content}
         WHERE id = #{id}
     </update>
 
     <delete id="deleteBoard" parameterType="int">
-        DELETE FROM board WHERE id = #{id}
+        DELETE FROM board
+        WHERE id = #{id}
     </delete>
 
     <update id="incrementViews" parameterType="int">
-        UPDATE board SET views = views + 1 WHERE id = #{id}
+        UPDATE board
+        SET views = views + 1
+        WHERE id = #{id}
     </update>
+
+    <!-- ===== 검색/페이징 추가 ===== -->
+    <select id="count" resultType="int">
+        SELECT COUNT(*)
+        FROM board
+        <where>
+            <if test="q != null and q != ''">
+                <choose>
+                    <when test="type == 'title'">
+                        AND title LIKE CONCAT('%', #{q}, '%')
+                    </when>
+                    <when test="type == 'content'">
+                        AND content LIKE CONCAT('%', #{q}, '%')
+                    </when>
+                    <when test="type == 'writer'">
+                        AND writer LIKE CONCAT('%', #{q}, '%')
+                    </when>
+                    <otherwise>
+                        AND (title LIKE CONCAT('%', #{q}, '%')
+                        OR  content LIKE CONCAT('%', #{q}, '%'))
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+    </select>
+
+    <select id="find" resultType="com.multi.springboot.model.Board">
+        SELECT id, title, writer, content, views, created_at
+        FROM board
+        <where>
+            <if test="q != null and q != ''">
+                <choose>
+                    <when test="type == 'title'">
+                        AND title   LIKE CONCAT('%', #{q}, '%')
+                    </when>
+                    <when test="type == 'content'">
+                        AND content LIKE CONCAT('%', #{q}, '%')
+                    </when>
+                    <when test="type == 'writer'">
+                        AND writer  LIKE CONCAT('%', #{q}, '%')
+                    </when>
+                    <otherwise>
+                        AND (title LIKE CONCAT('%', #{q}, '%')
+                        OR  content LIKE CONCAT('%', #{q}, '%'))
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+        ORDER BY id DESC
+        <!-- ✅ MySQL/마리아DB에 가장 안전한 LIMIT 문법 -->
+        LIMIT #{offset}, #{limit}
+    </select>
+
 
 </mapper>
