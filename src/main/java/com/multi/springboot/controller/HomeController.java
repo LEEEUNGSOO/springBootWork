@@ -7,6 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HomeController {
-    @GetMapping("/")
-    public String index() { return "index"; } // /WEB-INF/views/index.jsp
+    @GetMapping("/index")
+    public String index() {
+        return "index";
+    } // /WEB-INF/views/index.jsp
+
+    @GetMapping("/restbase")
+    public String restbaseView(){
+        return "restbase";
+    }
 }
