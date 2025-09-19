@@ -36,13 +36,13 @@ ${comments}
     <!-- Comment List -->
     <h2 class="mt-5">Comment List</h2>
     <ul class="list-group" id="comment-list">
-        <c:forEach var="comment" items="\${comments}">
+        <c:forEach var="comment" items="${comments}">
             <li class="list-group-item d-flex justify-content-between align-items-center"
                 data-id="\${comment.id}">
                 <div class="comment-content">
-                    <strong>\${comment.content}</strong>
+                    <strong>"\${comment.content}" </strong>
                     <br>
-                    <small class="text-muted">\${comment.create_at}</small>
+                    <small class="text-muted">"${comment.createdAt}"</small>
                 </div>
                 <div>
                     <button class="btn btn-warning btn-sm edit-button">Edit</button>
@@ -153,7 +153,7 @@ ${comments}
                                 <div class="comment-content">
                                     <strong>\${comment.content}</strong>
                                     <br>
-                                    <small class="text-muted">\${comment.create_at}</small>
+                                    <small class="text-muted">\${comment.created_at}</small>
                                 </div>
                                 <div>
                                     <button class="btn btn-warning btn-sm edit-button">Edit</button>

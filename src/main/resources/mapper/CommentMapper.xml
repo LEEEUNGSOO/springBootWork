@@ -4,19 +4,27 @@
 <mapper namespace="com.multi.springboot.mapper.CommentMapper">
 
     <select id="findAll" resultType="com.multi.springboot.model.Comment">
-        SELECT * FROM comments
+        SELECT id, content, created_at
+        FROM comments
+        ORDER BY created_at DESC
+    </select>
+
+    <select id="findById" parameterType="long" resultType="com.multi.springboot.model.Comment">
+        SELECT id, content, created_at
+        FROM comments
+        WHERE id = #{id}
     </select>
 
     <insert id="insertComment" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO comments (content) VALUES (#{content})
+        <!-- created_at은 DB DEFAULT로 자동입력(아래 4번 참고) -->
     </insert>
 
-    <delete id="deleteComment">
+    <delete id="deleteComment" parameterType="long">
         DELETE FROM comments WHERE id = #{id}
     </delete>
 
     <update id="updateComment">
-        UPDATE comments SET content=#{content} WHERE id=#{id}
+        UPDATE comments SET content = #{content} WHERE id = #{id}
     </update>
-
 </mapper>
