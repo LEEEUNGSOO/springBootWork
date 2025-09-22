@@ -18,7 +18,7 @@
 </head>
 
 <body>
-${comments}
+
 <div class="container mt-5">
     <h1 class="text-center mb-4">Comments</h1>
 
@@ -40,7 +40,7 @@ ${comments}
             <li class="list-group-item d-flex justify-content-between align-items-center"
                 data-id="\${comment.id}">
                 <div class="comment-content">
-                    <strong>"\${comment.content}" </strong>
+                    <strong>"${comment.content}" </strong>
                     <br>
                     <small class="text-muted">"${comment.createdAt}"</small>
                 </div>

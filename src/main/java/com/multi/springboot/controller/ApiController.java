@@ -21,7 +21,7 @@ public class ApiController {
 
     // GET /api/hello
     @GetMapping("/hello")
-    public String hello() {
+     public String hello() {
         return "Hello, World!";
     }
 
@@ -32,6 +32,8 @@ public class ApiController {
     }
 
     // GET /api/greet/{name}
+    //api/greet?name=JOHN&NO=5&PAGE=7
+    //api/greet/{name}/{no}/{page}
     @GetMapping("/greet/{name}")
     public String greet(@PathVariable String name) {
         return "Hello, " + name + "!";
